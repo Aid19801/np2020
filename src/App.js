@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Nav } from './components';
+import PageHome from './containers/Home';
 import './App.css';
 
 const loginAndGetHoldings = async () => {
@@ -17,7 +19,6 @@ const loginAndGetHoldings = async () => {
   const { access_token: token } = await tokenResponse.json();
 
   const holdingsResponse = await fetch('/api/v1/holdings/', {
-    // careful, you need the trailing slash ;)
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -31,6 +32,7 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       const holdings = await loginAndGetHoldings();
+      console.log('holdings are ', holdings);
       setData({ holdings });
     };
     getData();
@@ -38,11 +40,12 @@ const App = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <pre style={{ textAlign: 'left' }}>
-          Holdings: {JSON.stringify(data.holdings, null, 2)}
-        </pre>
-      </header>
+      <header className="App-header">#NetPurpose</header>
+      <Nav />
+      <section>
+        <PageHome />
+        <p>Holdings: {JSON.stringify(data.holdings, null, 2)}</p>
+      </section>
     </div>
   );
 };
